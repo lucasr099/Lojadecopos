@@ -254,4 +254,3 @@ Este projeto demonstra:
 ✔ Chatbot especializado em produtos (copos)
 ✔ Totalmente funcional e pronto para produção
 
----Se quiser, gero **README com imagens**, **diagramas**, ou **versão em inglês** também!
