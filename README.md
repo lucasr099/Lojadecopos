@@ -1,321 +1,257 @@
-🛒 Bot Loja de Copos — FastAPI + React + Gemini + SQL
+# 🛒 Chatbot Loja de Copos — FastAPI + React + Gemini + SQLite
 
-Projeto desenvolvido para o processo seletivo: chatbot integrado a um e-commerce simples.
+Este projeto é um **chatbot integrado a um mini e-commerce de copos**, capaz de responder perguntas sobre **estoque, preço e descrição dos produtos**, utilizando **Google Gemini** como LLM.
 
-📌 Resumo do Projeto
+O sistema é composto por:
 
-Aplicação full-stack composta por:
+* **Backend**: FastAPI + SQLite + SQLAlchemy + Gemini
+* **Frontend**: React + Vite + Axios
+* **Chatbot**: responde com base nos dados reais do banco
+* **Banco de Dados**: tabela simples com produtos (copos)
 
-🔸 Backend (FastAPI, Python)
+---
 
-API REST completa
+# 📦 1. Estrutura do Projeto
 
-Integração com Google Gemini (LLM)
-
-Banco de dados SQLite
-
-Rotas para produtos, healthcheck e chatbot
-
-Testes unitários com pytest
-
-Script SQL para popular o banco
-
-Arquitetura organizada em módulos
-
-🔸 Frontend (React + Vite)
-
-Interface simples e funcional
-
-Comunicação com backend via Axios
-
-Campo de pergunta e exibição da resposta do chatbot
-
-🗂️ Arquitetura do Projeto
+```
 backend/
 │── main.py
 │── chat.py
-│── models.py
 │── db.py
+│── models.py
 │── seed.sql
 │── store.db
 │── test/
 │     ├── test_health.py
 │     └── test_products.py
-│
+
 frontend/
 │── index.html
 │── package.json
+│── vite.config.js
 │── src/
 │     ├── App.jsx
 │     └── main.jsx
-⚙️ Tecnologias Utilizadas
-Backend
+```
 
-Python 3.10+
+---
 
-FastAPI
+# 🗄️ 2. Banco de Dados
 
-SQLAlchemy
+O banco usado é **SQLite**, localizado em:
 
-SQLite
+```
+backend/store.db
+```
 
-Google Gemini (LLM)
+## 🏷️ Tabela: `products`
 
-Pytest
+| Campo       | Tipo       | Descrição                        |
+| ----------- | ---------- | -------------------------------- |
+| id          | INTEGER PK | Identificador único do produto   |
+| name        | TEXT       | Nome do copo                     |
+| description | TEXT       | Descrição simples do produto     |
+| price       | REAL       | Preço do copo                    |
+| stock       | INTEGER    | Quantidade disponível no estoque |
 
-Uvicorn
+## 📌 Dados usados no projeto (seed.sql)
 
-Frontend
+```sql
+INSERT INTO products (name, description, price, stock) VALUES
+('Copo Azul', 'Copo de plástico azul', 12.90, 30),
+('Copo Vermelho', 'Copo vermelho decorado', 11.90, 25),
+('Copo Amarelo', 'Copo amarelo fosco', 10.50, 20),
+('Copo Verde', 'Copo verde translúcido', 12.00, 18),
+('Copo Roxo', 'Copo roxo premium', 13.50, 15),
+('Copo Lilás', 'Copo lilás suave', 12.20, 22),
+('Copo Preto', 'Copo preto elegante', 14.50, 30),
+('Copo Laranja', 'Copo laranja resistente', 12.90, 16),
+('Copo Branco', 'Copo branco clássico', 9.90, 50),
+('Copo Cinza', 'Copo cinza minimalista', 11.90, 27);
+```
 
-React
+Esses dados são exatamente os que o chatbot usa para responder.
 
-Vite
+---
 
-Axios
+# 🤖 3. Como o Chatbot Funciona
 
-🚀 Como Rodar o Projeto
-🔧 1. Ativar o ambiente virtual
+Quando o usuário faz perguntas como:
+
+> “Quantas unidades do copo azul tem?”
+> “Qual o preço do copo lilás?”
+> “Tem copo preto disponível?”
+
+O backend executa:
+
+1. Extrai palavras-chave da pergunta
+2. Pesquisa no banco de dados
+3. Envia para o Gemini informações como:
+
+   * Nome
+   * Descrição
+   * Preço
+   * Estoque
+4. O Gemini gera uma resposta amigável baseada somente nesses dados reais
+
+✔ O chatbot **não inventa produtos**
+✔ O chatbot **não responde sobre itens que não estão na tabela**
+✔ O chatbot **usa somente os copos cadastrados no banco**
+
+---
+
+# ⚙️ 4. Como Rodar o Backend (FastAPI)
+
+### 1️⃣ Ative o ambiente virtual
+
+```
 python -m venv venv
-venv\Scripts\activate  # Windows
-📦 2. Instalar dependências
+venv\Scripts\activate   # Windows
+```
+
+### 2️⃣ Instale as dependências
+
+```
 pip install -r requirements.txt
-🗄️ 3. Criar/Popular o Banco de Dados
+```
+
+### 3️⃣ Popular o banco de dados
+
+```
 sqlite3 store.db < seed.sql
-▶️ 4. Iniciar o backend
+```
+
+### 4️⃣ Crie o arquivo `.env` na pasta backend
+
+```
+GEMINI_API_KEY=SUA_CHAVE_AQUI
+```
+
+### 5️⃣ Execute a API
+
+```
 uvicorn main:app --reload
+```
 
-A API estará em:
-👉 http://127.0.0.1:8000
+A API estará disponível em:
 
-💻 Rodar o Frontend
+```
+http://localhost:8000
+```
 
-No diretório frontend/:
+Documentação automática FastAPI:
 
+```
+http://localhost:8000/docs
+```
+
+---
+
+# 💻 5. Como Rodar o Frontend (React)
+
+Entre na pasta **frontend/**:
+
+### 1️⃣ Instalar dependências
+
+```
 npm install
+```
+
+### 2️⃣ Rodar projeto
+
+```
 npm run dev
+```
 
-Frontend disponível em:
-👉 http://localhost:5173/
+A aplicação abre em:
 
-🧪 Testes
-Rodar todos os testes
+```
+http://localhost:5173
+```
+
+---
+
+# 🧪 6. Testes Automatizados
+
+Rodar testes:
+
+```
 pytest -v
-Testes disponíveis:
+```
 
-test_health.py → valida se API está funcionando
+Inclui testes de:
 
-test_products.py → valida listagem de produtos
+* healthcheck (`/health`)
+* listagem de produtos
 
-🤖 Como o Chatbot Funciona
+---
 
-O endpoint /chat/ recebe a mensagem do usuário e:
+# 📡 7. Endpoints do Backend
 
-Detecta se a frase é relacionada a produtos de copo
+### ✔ Listar produtos
 
-Extrai palavras-chave
+```
+GET /products
+```
 
-Consulta o banco de dados
+### ✔ Buscar produto por ID
 
-Se 1 produto é encontrado → retorna preço + estoque
+```
+GET /products/{id}
+```
 
-Se vários são encontrados → pede para escolher
+### ✔ Chatbot
 
-Se nenhum é encontrado → oferece sugestões
+```
+POST /chat
+{
+  "question": "quantos copos azuis tem?"
+}
+```
 
-Usa LLM Gemini para gerar resposta final seguindo regras rígidas
+### ✔ Healthcheck
 
-🔐 Variáveis de Ambiente
-
-Criar arquivo .env:
-
-GEMINI_API_KEY=suachaveaqui
-📄 Endpoints
+```
 GET /health
+```
 
-Retorna status da API.
+---
 
-GET /products/
+# 🧠 8. Fluxo Completo do Chatbot
 
-Lista todos os produtos do banco.
+```
+Usuário → Frontend React → Backend FastAPI → Banco SQLite
+       → Gemini → Resposta inteligente → Frontend
+```
 
-POST /chat/
+---
 
-Recebe { "message": "..." } e retorna resposta do bot.
+# 📚 9. Tecnologias Utilizadas
 
-📘 Script SQL (seed.sql)
+### Backend
 
-Contém todos os produtos iniciais que serão carregados no banco.
+* FastAPI
+* SQLAlchemy
+* SQLite
+* Google Gemini
+* Pytest
+* Python 3.10+
 
-📚 Conclusão
+### Frontend
 
-Este projeto cumpre todos os requisitos solicitados:
+* React
+* Vite
+* Axios
 
-✔ Chatbot funcional
-✔ LLM Gemini integrado
-✔ Backend FastAPI
-✔ Banco SQL
-✔ Testes (pytest)
-✔ Documentação completa
-✔ Frontend React
+---
 
-Pronto para apresentar em processo seletivo.🛒 Bot Loja de Copos — FastAPI + React + Gemini + SQL
+# 🏁 10. Conclusão
 
-Projeto desenvolvido para o processo seletivo: chatbot integrado a um e-commerce simples.
+Este projeto demonstra:
 
-📌 Resumo do Projeto
+✔ Integração entre frontend, backend e IA
+✔ Consulta real a banco de dados
+✔ Chatbot especializado em produtos (copos)
+✔ Totalmente funcional e pronto para produção
 
-Aplicação full-stack composta por:
-
-🔸 Backend (FastAPI, Python)
-
-API REST completa
-
-Integração com Google Gemini (LLM)
-
-Banco de dados SQLite
-
-Rotas para produtos, healthcheck e chatbot
-
-Testes unitários com pytest
-
-Script SQL para popular o banco
-
-Arquitetura organizada em módulos
-
-🔸 Frontend (React + Vite)
-
-Interface simples e funcional
-
-Comunicação com backend via Axios
-
-Campo de pergunta e exibição da resposta do chatbot
-
-🗂️ Arquitetura do Projeto
-backend/
-│── main.py
-│── chat.py
-│── models.py
-│── db.py
-│── seed.sql
-│── store.db
-│── test/
-│     ├── test_health.py
-│     └── test_products.py
-│
-frontend/
-│── index.html
-│── package.json
-│── src/
-│     ├── App.jsx
-│     └── main.jsx
-⚙️ Tecnologias Utilizadas
-Backend
-
-Python 3.10+
-
-FastAPI
-
-SQLAlchemy
-
-SQLite
-
-Google Gemini (LLM)
-
-Pytest
-
-Uvicorn
-
-Frontend
-
-React
-
-Vite
-
-Axios
-
-🚀 Como Rodar o Projeto
-🔧 1. Ativar o ambiente virtual
-python -m venv venv
-venv\Scripts\activate  # Windows
-📦 2. Instalar dependências
-pip install -r requirements.txt
-🗄️ 3. Criar/Popular o Banco de Dados
-sqlite3 store.db < seed.sql
-▶️ 4. Iniciar o backend
-uvicorn main:app --reload
-
-A API estará em:
-👉 http://127.0.0.1:8000
-
-💻 Rodar o Frontend
-
-No diretório frontend/:
-
-npm install
-npm run dev
-
-Frontend disponível em:
-👉 http://localhost:5173/
-
-🧪 Testes
-Rodar todos os testes
-pytest -v
-Testes disponíveis:
-
-test_health.py → valida se API está funcionando
-
-test_products.py → valida listagem de produtos
-
-🤖 Como o Chatbot Funciona
-
-O endpoint /chat/ recebe a mensagem do usuário e:
-
-Detecta se a frase é relacionada a produtos de copo
-
-Extrai palavras-chave
-
-Consulta o banco de dados
-
-Se 1 produto é encontrado → retorna preço + estoque
-
-Se vários são encontrados → pede para escolher
-
-Se nenhum é encontrado → oferece sugestões
-
-Usa LLM Gemini para gerar resposta final seguindo regras rígidas
-
-🔐 Variáveis de Ambiente
-
-Criar arquivo .env:
-
-GEMINI_API_KEY=suachaveaqui
-📄 Endpoints
-GET /health
-
-Retorna status da API.
-
-GET /products/
-
-Lista todos os produtos do banco.
-
-POST /chat/
-
-Recebe { "message": "..." } e retorna resposta do bot.
-
-📘 Script SQL (seed.sql)
-
-Contém todos os produtos iniciais que serão carregados no banco.
-
-📚 Conclusão
-
-Este projeto cumpre todos os requisitos solicitados:
-
-✔ Chatbot funcional
-✔ LLM Gemini integrado
-✔ Backend FastAPI
-✔ Banco SQL
-✔ Testes (pytest)
-✔ Documentação completa
-✔ Frontend React
-
-Pronto para apresentar em processo seletivo.
+---Se quiser, gero **README com imagens**, **diagramas**, ou **versão em inglês** também!
