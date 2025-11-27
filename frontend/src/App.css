@@ -1,42 +1,110 @@
-#root {
-  max-width: 1280px;
+/* Container principal */
+.container {
+  max-width: 600px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 40px;
+  color: #fff;
   text-align: center;
+  animation: fadeIn 0.6s ease;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Título */
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 25px;
 }
 
-@keyframes logo-spin {
+/* Input */
+.input {
+  width: 100%;
+  height: 140px;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  background: #333;
+  color: #fff;
+  font-size: 1rem;
+  resize: none;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input:focus {
+  background: #3b3b3b;
+  box-shadow: 0 0 8px #646cff;
+}
+
+/* Botão */
+.button {
+  margin-top: 15px;
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #646cff, #4f4ad8);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.button:disabled {
+  background: #444;
+  cursor: not-allowed;
+}
+
+/* Subtitulo */
+.subtitle {
+  margin-top: 40px;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+/* Caixa de resposta */
+.response {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+  min-height: 120px;
+  text-align: left;
+  line-height: 1.5;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  animation: fadeUp 0.5s ease;
+}
+
+/* Loader animado */
+.loader {
+  width: 25px;
+  height: 25px;
+  border: 4px solid #fff;
+  border-top: 4px solid transparent;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: spin 1s linear infinite;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeUp {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(12px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
